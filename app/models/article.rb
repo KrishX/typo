@@ -426,7 +426,6 @@ class Article < Content
     @article.author = other_article.author
     @article.body = other_article.body + base_article.body
     @article.published_at = Time.now
-
     @article
   end
 

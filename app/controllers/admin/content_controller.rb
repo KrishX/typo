@@ -42,11 +42,17 @@ class Admin::ContentController < Admin::BaseController
     @article = Article.find(@base_article_id).merge_with(@other_article_id)
 
     if @article.save
+
+      ## Handle Comments
       @feedbacks = Feedback.where(:article_id => [@base_article_id, @other_article_id])
       @feedbacks.each do |f|
         f.article_id = @article.id
         f.save
       end
+
+      ## Handle merged articles
+      Article.destroy_all(:id => [@base_article_id, @other_article_id])
+
       flash[:notice] = _("Article ##{@base_article_id} successfully merged with ##{@other_article_id} into the new Article##{@article.id}!")
       redirect_to :action => 'index'
       return
