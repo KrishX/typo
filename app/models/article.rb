@@ -422,6 +422,8 @@ class Article < Content
     base_article, other_article = self, Article.find(other_article_id)
     @article = Article.get_or_build_article
 
+    @article.user_id = other_article.user_id
+    @article.text_filter_id = other_article.text_filter_id
     @article.title = other_article.title
     @article.author = other_article.author
     @article.body = other_article.body + base_article.body

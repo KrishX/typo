@@ -39,6 +39,7 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     @base_article_id, @other_article_id = params[:base_article], params[:merge_with]
+    begin
     @article = Article.find(@base_article_id).merge_with(@other_article_id)
 
     if @article.save
@@ -57,6 +58,10 @@ class Admin::ContentController < Admin::BaseController
       redirect_to :action => 'index'
       return
     end
+  rescue
+    flash[:warning] = _("No such article exists!")
+    redirect_to :action => 'index'
+  end
   end
 
   def destroy
