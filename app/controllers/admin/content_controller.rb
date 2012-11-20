@@ -37,6 +37,16 @@ class Admin::ContentController < Admin::BaseController
     new_or_edit
   end
 
+  def merge
+    @base_article_id, @other_article_id = params[:base_article], params[:merge_with]
+    @article = Article.find(@base_article_id).merge_with(@other_article_id)
+    if @article.save
+      flash[:notice] = _("Article ##{@base_article_id} successfully merged with ##{@other_article_id}!")
+      redirect_to :action => 'index'
+      return
+    end
+  end
+
   def destroy
     @record = Article.find(params[:id])
 
